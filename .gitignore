@@ -1,0 +1,7 @@
+__pycache__
+venv
+.terraform
+.lock.hcl
+.tfstate
+.tfstate.backup
+.lock.hcl
