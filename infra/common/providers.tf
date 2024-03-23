@@ -11,7 +11,7 @@ terraform {
 
   backend "s3" {
     bucket  = "terraform-state-010203040"
-    key     = "multi-container-w-frontend/terraform.tfstate"
+    key     = "common-infra/terraform.tfstate"
     region  = "eu-west-2"
     profile = "personal"
   }

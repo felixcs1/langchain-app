@@ -3,16 +3,17 @@ from fastapi.responses import RedirectResponse
 from langserve import add_routes
 
 
-from app.chain import chain as nomic_chain
+from app.chain import chain_simple
 
 app = FastAPI()
 
 
 # http://127.0.0.1:8000/nomic-rag/playground/
-add_routes(app, nomic_chain, path="/nomic-rag")
+add_routes(app, chain_simple, path="/simple")
 
 @app.get("/")
 async def redirect_root_to_docs():
+    print("HELLO WORLD!!!")
     return RedirectResponse("/docs")
 
 

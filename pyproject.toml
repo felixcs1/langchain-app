@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "langchain_demo_app"
+name = "langchain-app"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["Felix Stephenson <felix.s@hotmail.co.uk>"]
 readme = "README.md"
 packages = [
     { include = "app" },
@@ -24,6 +24,7 @@ bs4 = "^0.0.2"
 
 [tool.poetry.group.dev.dependencies]
 langchain-cli = ">=0.0.15"
+jupyter = "^1.0.0"
 
 [build-system]
 requires = ["poetry-core"]
