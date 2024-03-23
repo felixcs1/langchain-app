@@ -3,7 +3,7 @@ name: wc - build and push
 on: 
   workflow_call:
     inputs:
-      repository:
+      repo:
         description: 'ECR Repository'
         required: true
         type: string
@@ -51,13 +51,11 @@ jobs:
 
       - name: Build and push
         env:
-          URL: ${{ steps.ecr.outputs.registry }} if inputs.destination == 'ECR' else 'felixsteph'
-          REPO: ${{inputs.repository}}
-          TAG: ${{inputs.image_tag}}
-          FILE: ${{inputs.dockerfile}}
+          URL: ${{ steps.ecr.outputs.registry }} if inputs.destination == 'ECR' else felixsteph
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ env.URL }}/$REPO:$TAG
+          dockerfile: ${{inputs.dockerfile}}
+          tags: ${{ env.URL }}/${{inputs.repo}}:${{inputs.image_tag}}
         
