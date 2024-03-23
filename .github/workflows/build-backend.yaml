@@ -8,3 +8,4 @@ jobs:
     uses: ./.github/workflows/wc-build-push.yaml
     with:
       repository: langserve
+      dockerfile: Dockerfile
