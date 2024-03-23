@@ -210,3 +210,5 @@ venv
 .tfstate
 .tfstate.backup
 .lock.hcl
+
+.python-version
