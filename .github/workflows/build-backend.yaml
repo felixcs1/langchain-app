@@ -2,6 +2,14 @@ name: Build Backend
 
 on:
   workflow_dispatch:
+    inputs:
+      destination:
+        type: choice
+        description: "Where to push the image to 'ECR' or 'HUB'"
+        options:
+          - ECR
+          - HUB
+        default: ECR
 
 jobs:
   build-and-push:

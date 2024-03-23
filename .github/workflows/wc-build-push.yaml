@@ -17,7 +17,7 @@ on:
         default: Dockerfile
       destination:
         type: string
-        description: "Where to push the image to, 'ECR' or 'HUB'"
+        description: "Where to push the image to 'ECR' or 'HUB'"
         default: ECR
   
 jobs:
@@ -26,7 +26,10 @@ jobs:
     runs-on: ubuntu-20.04  
     steps:  
       - name: Checkout
-        uses: actions/checkout@v2    
+        uses: actions/checkout@v2 
+
+      - name: echo
+        run: echo ${{ secrets.AWS_REGION }}
         
       - name: Setup AWS ECR Details
         if: inputs.destination == 'ECR'
@@ -34,7 +37,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{secrets.AWS_REGION}}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Login to Amazon ECR
         if: inputs.destination == 'ECR'
