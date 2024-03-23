@@ -10,11 +10,9 @@ on:
       image_tag:
         description: 'Image tag'
         type: string
-        default: latest
       dockerfile:
         description: 'Dockerfile name'
         type: string
-        default: Dockerfile
       destination:
         type: string
         description: "Where to push the image to 'ECR' or 'HUB'"

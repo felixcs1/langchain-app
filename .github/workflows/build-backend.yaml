@@ -16,5 +16,7 @@ jobs:
     uses: ./.github/workflows/wc-build-push.yaml
     with:
       repository: langserve
+      image_tag: latest
       dockerfile: Dockerfile
+      destination: ${{ inputs.destination }}
     secrets: inherit
