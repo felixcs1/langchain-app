@@ -1,0 +1,10 @@
+name: Build Backend
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    uses: ./wc-build-push.yaml
+    with:
+      repository: langserve

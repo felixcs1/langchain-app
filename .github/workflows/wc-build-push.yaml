@@ -1,7 +1,6 @@
-name: Docker build and push
+name: wc - build and push
 
 on: 
-  workflow_dispatch:
   workflow_call:
     inputs:
       repository:
