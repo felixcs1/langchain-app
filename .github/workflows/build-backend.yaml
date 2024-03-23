@@ -1,5 +1,4 @@
-name: Build Backend - ${{ inputs.destination }}
-
+name: Build Backend
 on:
   workflow_dispatch:
     inputs:
