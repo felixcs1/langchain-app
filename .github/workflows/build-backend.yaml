@@ -1,3 +1,6 @@
+name: Build Backend
+run-name: Build Backend - ${{ github.event.inputs.destination }}
+
 on:
   workflow_dispatch:
     inputs:
@@ -9,7 +12,6 @@ on:
           - HUB
         default: ECR
 
-name: Build Backend - ${{ github.event.inputs.destination }}
 jobs:
   build-and-push:
     uses: ./.github/workflows/wc-build-push.yaml
