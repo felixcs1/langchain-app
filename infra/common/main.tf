@@ -1,6 +1,6 @@
 variable "repo_name" {
   type = string
-  default = "felix-ecr-repo"
+  default = "langserve"
 }
 
 variable "vpc_name" {
