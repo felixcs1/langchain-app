@@ -56,9 +56,9 @@ resource "aws_security_group" "ingress_api" {
 
 
 # For EFS
-# "You have to allow NFS traffic from the container to the EFS fs. 
-# For this, you need a Security Group for the ECS container and an SG for 
-# the EFS mount target. Create an ingress rule in the EFS SG that allows 
+# "You have to allow NFS traffic from the container to the EFS fs.
+# For this, you need a Security Group for the ECS container and an SG for
+# the EFS mount target. Create an ingress rule in the EFS SG that allows
 # tcp traffic on port 2049 from the container’s SG and you are good to go"
 # https://opsdocks.com/posts/use-aws-ecs-with-efs/
 resource "aws_security_group" "ingress_for_efs" {

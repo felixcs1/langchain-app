@@ -62,10 +62,10 @@ resource "aws_ecs_task_definition" "this" {
           awslogs-stream-prefix = local.service_name
         }
       }
-      mountPoints: [
+      mountPoints : [
         {
-          sourceVolume: "efs-persist",
-          containerPath: "/root/.ollama"
+          sourceVolume : "efs-persist",
+          containerPath : "/root/.ollama"
         }
       ]
     },
@@ -110,14 +110,14 @@ resource "aws_ecs_task_definition" "this" {
 
 
 resource "aws_ecs_service" "this" {
-  name            = "${local.service_name}"
+  name            = local.service_name
   cluster         = aws_ecs_cluster.this.id
   task_definition = aws_ecs_task_definition.this.arn
   desired_count   = 1
   launch_type     = "FARGATE"
-  
+
   # enables `aws ecs execute-command` cli commands against containers
-  # requires task_role_arn in task definition 
+  # requires task_role_arn in task definition
   enable_execute_command = true
 
   network_configuration {

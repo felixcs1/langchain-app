@@ -1,10 +1,10 @@
 variable "repo_name" {
-  type = string
+  type    = string
   default = "langserve"
 }
 
 variable "vpc_name" {
-  type = string  
+  type    = string
   default = "felix-vpc"
 }
 
@@ -17,7 +17,7 @@ data "aws_availability_zones" "available_zones" {
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = "${var.vpc_name}"
+  name = var.vpc_name
   cidr = "10.0.0.0/16"
 
   # For multiple AZs (slower to deploy)
@@ -26,11 +26,11 @@ module "vpc" {
   public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 
   enable_nat_gateway = true
-  enable_vpn_gateway = false # Not sure what this is so turn off 
+  enable_vpn_gateway = false # Not sure what this is so turn off
 
 
-  # used to pick up in data resources  
-  private_subnet_tags = {  
+  # used to pick up in data resources
+  private_subnet_tags = {
     Private = "true"
   }
 

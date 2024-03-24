@@ -4,7 +4,7 @@ resource "aws_efs_file_system" "efs_volume" {
   tags = {
     Name = "ECS-EFS-FS"
   }
-  
+
 }
 
 resource "aws_efs_mount_target" "ecs_temp_space_az0" {
@@ -16,4 +16,3 @@ resource "aws_efs_mount_target" "ecs_temp_space_az0" {
 
   security_groups = [aws_security_group.ingress_for_efs.id]
 }
-
