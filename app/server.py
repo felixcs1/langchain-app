@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.logger import logger
 from fastapi.responses import RedirectResponse
 from langserve import add_routes
+from requests.exceptions import ChunkedEncodingError
 from starlette.background import BackgroundTasks
 
 from app.chain import chain_simple
@@ -20,13 +21,21 @@ else:
 app = FastAPI()
 
 
+# Try not using access point for EFS mount
+# Somehow see if the mount is workin
+
+
 def download_model():
-    logger.info("downloading model")
+    print("downloading model")
     response = requests.post(
         f"http://{OLLAMA_URL}:{OLLAMA_PORT}/api/pull",
-        json={"model": "orca-mini:fp-16", "name": "orca-mini:fp-16"},
+        json={"model": "orca-mini:3b", "name": "orca-mini:3b"},
     )
-    logger.info("Response: ", response.content)
+    try:
+        for data in response.iter_content(chunk_size=1024):
+            print(data)
+    except ChunkedEncodingError as ex:
+        print(f"Invalid chunk encoding {str(ex)}")
 
 
 @app.on_event("startup")
@@ -47,6 +56,12 @@ async def redirect_root_to_docs():
     return RedirectResponse("/docs")
 
 
+@app.get("/healthz")
+async def healthz():
+    logger.info("HELLO WORLD!!!")
+    return "Healthy"
+
+
 # Edit this to add the chain you want to add
 # add_routes(app, NotImplemented)
 
@@ -55,5 +70,5 @@ if __name__ == "__main__":
 
     uvicorn.run(app, host="0.0.0.0", port=8080)
 
-    #  curl -X POST http://127.0.0.1:11434/api/pull 
+    #  curl -X POST http://127.0.0.1:11434/api/pull
     # -d '{"model": "orca-mini:3b", "name": "orca-mini:3b"}'

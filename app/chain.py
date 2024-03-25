@@ -19,3 +19,4 @@ prompt = ChatPromptTemplate.from_template(template)
 chain_simple = prompt | model_local | StrOutputParser()
 
 print("CHAIN INIT DONE!!!")
+print(f"http://{OLLAMA_URL}:{OLLAMA_PORT}")

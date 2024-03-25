@@ -13,11 +13,8 @@ python = "^3.10"
 uvicorn = "^0.23.2"
 langserve = {extras = ["server"], version = ">=0.0.30"}
 pydantic = "<2"
-langchain-nomic = "^0.0.1"
 langchain-community = "^0.0.17"
-tiktoken = "^0.5.2"
 langchain-openai = "^0.0.5"
-chromadb = "^0.4.22"
 langchain = "^0.1.5"
 bs4 = "^0.0.2"
 

@@ -3,7 +3,7 @@ locals {
   vpc_name       = "felix-vpc"
   ecr_repo_name  = "langserve"
   image_tag      = "latest"
-  container_port = 8000
+  container_port = 8080
   region         = "eu-west-2"
   task_cpu       = 256
   task_memory    = 512

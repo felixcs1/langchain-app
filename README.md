@@ -7,8 +7,33 @@ Install pre-commit hook
 pre-commit install
 ```
 
+## Docker
 
-Below is the boiler plate langerserve readme:
+```
+aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 972518559371.dkr.ecr.eu-west-2.amazonaws.com/langserve
+
+docker build -t 972518559371.dkr.ecr.eu-west-2.amazonaws.com/langserve:latest .
+
+docker push 972518559371.dkr.ecr.eu-west-2.amazonaws.com/langserve:latest
+
+```
+
+## ECS
+
+Access terminal in a task container
+
+```
+ aws ecs execute-command \
+--region eu-west-2 \
+--cluster langserve-app-cluster \
+--task <TASK ID> \
+--container langserve-app-container \ # or ollama-container
+--command "/bin/bash" \
+--interactive
+```
+
+
+Below is the boiler plate langeserve readme:
 
 ## Installation
 

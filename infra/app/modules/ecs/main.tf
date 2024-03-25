@@ -38,7 +38,7 @@ resource "aws_ecs_task_definition" "this" {
   # Only required if enable_execute_command = true in the service
   # gives the software running inside the ECS task/container permission to access AWS resources.
   # For e.g EFS
-  task_role_arn = data.aws_iam_role.ecs_task_role
+  task_role_arn = data.aws_iam_role.ecs_task_role.arn
 
   container_definitions = jsonencode([
     {
@@ -76,13 +76,17 @@ resource "aws_ecs_task_definition" "this" {
       cpu       = 10
       memory    = 512
       essential = true # need at least on essential container
-      command   = ["node", "app.js"]
       portMappings = [
         {
           containerPort = var.container_port
         },
       ]
-      environment = []
+      environment = [
+        {
+          name  = "OLLAMA_URL"
+          value = "localhost"
+        }
+      ]
       logConfiguration = {
         logDriver = "awslogs"
 
@@ -96,7 +100,7 @@ resource "aws_ecs_task_definition" "this" {
   ])
 
 
-  # N.B to see this EFS volumen work you need to shut down all tasks (desired task to 0)
+  # N.B to see this EFS volume work you need to shut down all tasks (desired task to 0)
   # This is because you cant have 2 mongodb tasks writing to the exact same folder in EFS
   volume {
     name = "efs-persist"
@@ -104,6 +108,13 @@ resource "aws_ecs_task_definition" "this" {
     efs_volume_configuration {
       file_system_id = aws_efs_file_system.efs_volume.id
       root_directory = "/"
+
+      # This if for using an access point so you can
+      # have a sub folder in the EFS
+      transit_encryption = "ENABLED"
+      authorization_config {
+        access_point_id = aws_efs_access_point.default.id
+      }
     }
   }
 }

@@ -3,7 +3,7 @@ data "aws_ecr_repository" "this" {
 }
 
 
-data "aws_vpc" "main" {
+data "aws_vpc" "this" {
   state = "available"
 
   tags = {
@@ -15,7 +15,7 @@ data "aws_vpc" "main" {
 data "aws_subnets" "private" {
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.main.id]
+    values = [data.aws_vpc.this.id]
   }
 
   tags = {
@@ -26,7 +26,7 @@ data "aws_subnets" "private" {
 data "aws_subnets" "public" {
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.main.id]
+    values = [data.aws_vpc.this.id]
   }
 
   tags = {
