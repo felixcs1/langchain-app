@@ -1,6 +1,21 @@
-variable "repo_name" {
-  type    = string
-  default = "langserve"
+resource "aws_ecr_repository" "backend" {
+  name = "langserve"
+
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+}
+
+resource "aws_ecr_repository" "frontend" {
+  name = "simple-react"
+
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
 }
 
 variable "vpc_name" {
@@ -44,20 +59,12 @@ module "vpc" {
 }
 
 
-resource "aws_ecr_repository" "this" {
-  name = var.repo_name
-
-  image_tag_mutability = "MUTABLE"
-
-  image_scanning_configuration {
-    scan_on_push = true
-  }
+output "backend_repo_url" {
+  value = aws_ecr_repository.backend.repository_url
 }
 
-
-
-output "repo_url" {
-  value = aws_ecr_repository.this.repository_url
+output "frontend_repo_url" {
+  value = aws_ecr_repository.frontend.repository_url
 }
 
 output "vpc_id" {

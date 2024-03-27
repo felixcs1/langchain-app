@@ -3,6 +3,7 @@ import logging
 import requests
 from fastapi import FastAPI
 from fastapi.logger import logger
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from langserve import add_routes
 from requests.exceptions import ChunkedEncodingError
@@ -22,9 +23,6 @@ app = FastAPI()
 
 
 # Try not using access point for EFS mount
-# Somehow see if the mount is workin
-
-
 def download_model():
     print("downloading model")
     response = requests.post(
@@ -52,14 +50,28 @@ add_routes(app, chain_simple, path="/simple")
 
 @app.get("/")
 async def redirect_root_to_docs():
-    logger.info("HELLO WORLD!!!")
+    logger.info("HELLO WORLD!!!!!!!!!!!")
+    print("HELLO WORLD!!!!!!!!!!!")
     return RedirectResponse("/docs")
 
 
 @app.get("/healthz")
 async def healthz():
     logger.info("HELLO WORLD!!!")
+    print("HELLO WORLD!!!!!!!!!!!")
     return "Healthy"
+
+
+# This is needed for calling the api from the browser
+# Set all CORS enabled origins
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["*"],
+)
 
 
 # Edit this to add the chain you want to add
