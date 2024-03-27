@@ -212,3 +212,5 @@ venv
 .lock.hcl
 
 .python-version
+
+node_modules
