@@ -5,8 +5,8 @@ locals {
   image_tag      = "latest"
   container_port = 8080
   region         = "eu-west-2"
-  task_cpu       = 256
-  task_memory    = 512
+  task_cpu       = 4096
+  task_memory    = 8192
 }
 
 

@@ -31,7 +31,7 @@ resource "aws_alb" "this" {
   # Requires permissions set on the bucket
   access_logs {
     bucket  = "alb-access-logs-12345"
-    enabled = true
+    enabled = false
   }
 }
 

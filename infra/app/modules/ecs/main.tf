@@ -44,8 +44,8 @@ resource "aws_ecs_task_definition" "this" {
     {
       name      = "ollama-container"
       image     = "ollama/ollama"
-      cpu       = 10
-      memory    = 512
+      cpu       = 2048
+      memory    = 8192
       essential = false # Required for it to be a dependency of the app container
       portMappings = [
         {
@@ -62,6 +62,8 @@ resource "aws_ecs_task_definition" "this" {
           awslogs-stream-prefix = local.service_name
         }
       }
+
+      # N.B can check this on the continer with 'df -h'
       mountPoints : [
         {
           sourceVolume : "efs-persist",
@@ -109,12 +111,12 @@ resource "aws_ecs_task_definition" "this" {
       file_system_id = aws_efs_file_system.efs_volume.id
       root_directory = "/"
 
-      # This if for using an access point so you can
-      # have a sub folder in the EFS
-      transit_encryption = "ENABLED"
-      authorization_config {
-        access_point_id = aws_efs_access_point.default.id
-      }
+      #   # This if for using an access point so you can
+      #   # have a sub folder in the EFS
+      #   transit_encryption = "ENABLED"
+      #   authorization_config {
+      #     access_point_id = aws_efs_access_point.default.id
+      #   }
     }
   }
 }
