@@ -1,17 +1,21 @@
 locals {
-  app_name         = "langserve-app"
+  app_name         = "langserve-frontend"
   vpc_name         = "felix-vpc-custom"
-  ecr_repo_name    = "langserve"
+  ecr_repo_name    = "langserve-frontend"
   ecs_cluster_name = "langserve-cluster"
   image_tag        = "latest"
-  container_port   = 8080
+  container_port   = 80 # Default port for nginx
   region           = "eu-west-2"
-  task_cpu         = 4096
-  task_memory      = 8192
+  task_cpu         = 256
+  task_memory      = 512
 }
 
 
-module "ecs_cluster" {
+data "aws_alb" "backend_alb" {
+  name = "langserve-app-alb"
+}
+
+module "frontend" {
   source = "./modules/ecs"
 
   vpc_name         = local.vpc_name
@@ -24,8 +28,10 @@ module "ecs_cluster" {
   task_cpu         = local.task_cpu
   task_memory      = local.task_memory
 
-  # This should be true, but to avoid high NAT gateway costs
-  # I am turning this off during development / learning and
-  # putting everything in public subnets for now
-  ecs_service_in_private_subnets = false
+  container_env = [
+    {
+      name  = "REACT_APP_BACKEND_URL"
+      value = "http://${data.aws_alb.backend_alb.dns_name}"
+    }
+  ]
 }

@@ -44,6 +44,7 @@ variable "task_memory" {
   default = 512
 }
 
-variable "ecs_service_in_private_subnets" {
-  type = bool
+
+variable "container_env" {
+  type = list(map(string))
 }

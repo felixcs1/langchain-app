@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import './simple_app.css'; // Import CSS file for styling
 
 
-const backendUrl = process.env.BACKEND_URL || 'http://localhost:8080';
+const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8080';
 // const backendUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://goals-app-backend-alb-360739314.eu-west-2.elb.amazonaws.com';
 console.log("Backend URL: " + backendUrl);
-
+console.log("ENV: " + JSON.stringify(process.env));
 
 function App() {
   const [inputValue, setInputValue] = useState('');
@@ -86,7 +86,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Professional React App</h1>
+      <h1>Simple React App</h1>
       <form onSubmit={handleSubmitStream}>
         <label>
           Input:

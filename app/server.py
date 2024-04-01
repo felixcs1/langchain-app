@@ -12,28 +12,35 @@ from starlette.background import BackgroundTasks
 from app.chain import chain_simple
 from app.config import OLLAMA_PORT, OLLAMA_URL
 
-gunicorn_logger = logging.getLogger("gunicorn.error")
-logger.handlers = gunicorn_logger.handlers
-if __name__ != "main":
-    logger.setLevel(gunicorn_logger.level)
-else:
-    logger.setLevel(logging.DEBUG)
+# TODO this logger's log not showing in ECS task logs,
+# only print statements working
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger()
 
 app = FastAPI()
-
+# This is needed for calling the api from a brower application
+# Set all CORS enabled origins
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["*"],
+)
 
 # Try not using access point for EFS mount
 def download_model():
-    print("downloading model")
+    logger.info("downloading model")
     response = requests.post(
         f"http://{OLLAMA_URL}:{OLLAMA_PORT}/api/pull",
         json={"model": "orca-mini:3b", "name": "orca-mini:3b"},
     )
     try:
         for data in response.iter_content(chunk_size=1024):
-            print(data)
+            logger.info(data)
     except ChunkedEncodingError as ex:
-        print(f"Invalid chunk encoding {str(ex)}")
+        logger.error(f"Invalid chunk encoding {str(ex)}")
 
 
 @app.on_event("startup")
@@ -44,34 +51,21 @@ async def startup_event():
     logger.info("background tasks done")
 
 
-# http://127.0.0.1:8000/nomic-rag/playground/
+# http://domain/simple
 add_routes(app, chain_simple, path="/simple")
 
 
 @app.get("/")
 async def redirect_root_to_docs():
-    logger.info("HELLO WORLD!!!!!!!!!!!")
-    print("HELLO WORLD!!!!!!!!!!!")
+    logger.info("Direct to docs")
+    response = requests.get("http://www.google.com")
+    logger.info("Pinged google, with status:", response.status_code)
     return RedirectResponse("/docs")
 
 
 @app.get("/healthz")
 async def healthz():
-    logger.info("HELLO WORLD!!!")
-    print("HELLO WORLD!!!!!!!!!!!")
     return "Healthy"
-
-
-# This is needed for calling the api from the browser
-# Set all CORS enabled origins
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-    expose_headers=["*"],
-)
 
 
 # Edit this to add the chain you want to add

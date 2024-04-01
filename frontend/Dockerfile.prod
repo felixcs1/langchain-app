@@ -10,11 +10,15 @@ COPY . .
 
 RUN npm run build
 
+ENV REACT_APP_BACKEND_URL=localhost:8080
+
 FROM nginx:stable-alpine
 
 # npm build saves to a /build folder
 # nginx needs files in /usr/share/nginx/html to serve them
 COPY --from=build /app/build /usr/share/nginx/html
+
+# N.B to be picked up, env vars require REACT_APP_ prefix
 
 # default port for nginx
 EXPOSE 80

@@ -1,16 +1,13 @@
 resource "aws_lb_target_group" "this" {
-  name = "${var.app_name}-alb-tg"
-
-  # Port might not be needed here "Port on which targets receive traffic,
-  # unless overridden when registering a specific target"
-  port        = var.container_port
+  name        = "${var.app_name}-alb-tg"
+  port        = 8080
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = data.aws_vpc.this.id
 
   health_check {
     enabled  = true
-    path     = "/healthz"
+    path     = "/" # Not sure what this should be for nginx
     interval = 60
   }
 

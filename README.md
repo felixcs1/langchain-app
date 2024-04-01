@@ -1,6 +1,6 @@
 # langchain_demo_app
 
-
+Architecture: https://miro.com/app/board/uXjVKaHvfVM=/
 
 Install pre-commit hook
 ```
@@ -16,6 +16,15 @@ docker build -t 972518559371.dkr.ecr.eu-west-2.amazonaws.com/langserve:latest .
 
 docker push 972518559371.dkr.ecr.eu-west-2.amazonaws.com/langserve:latest
 
+```
+
+For front end
+```
+aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 972518559371.dkr.ecr.eu-west-2.amazonaws.com/langserve
+
+docker build -t 972518559371.dkr.ecr.eu-west-2.amazonaws.com/langserve-frontend:latest -f ./frontend/Dockerfile.prod  ./frontend
+
+docker push 972518559371.dkr.ecr.eu-west-2.amazonaws.com/langserve-frontend:latest
 ```
 
 ## ECS
