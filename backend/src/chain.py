@@ -1,8 +1,12 @@
+import logging
+
 from langchain_community.chat_models import ChatOllama
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
+from src.config import OLLAMA_PORT, OLLAMA_URL
 
-from app.config import OLLAMA_PORT, OLLAMA_URL
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 # Prompt
 ollama_llm = "orca-mini:3b"
@@ -18,5 +22,5 @@ prompt = ChatPromptTemplate.from_template(template)
 # Chain
 chain_simple = prompt | model_local | StrOutputParser()
 
-print("CHAIN INIT DONE!!!")
-print(f"http://{OLLAMA_URL}:{OLLAMA_PORT}")
+logger.info("CHAIN INIT DONE!!!")
+logger.info(f"http://{OLLAMA_URL}:{OLLAMA_PORT}")

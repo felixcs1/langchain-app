@@ -2,20 +2,18 @@ import logging
 
 import requests
 from fastapi import FastAPI
-from fastapi.logger import logger
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from langserve import add_routes
 from requests.exceptions import ChunkedEncodingError
+from src.chain import chain_simple
+from src.config import OLLAMA_PORT, OLLAMA_URL
 from starlette.background import BackgroundTasks
-
-from app.chain import chain_simple
-from app.config import OLLAMA_PORT, OLLAMA_URL
 
 # TODO this logger's log not showing in ECS task logs,
 # only print statements working
 logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
 # This is needed for calling the api from a brower application
@@ -28,6 +26,7 @@ app.add_middleware(
     allow_headers=["*"],
     expose_headers=["*"],
 )
+
 
 # Try not using access point for EFS mount
 def download_model():

@@ -28,10 +28,8 @@ module "frontend" {
   task_cpu         = local.task_cpu
   task_memory      = local.task_memory
 
-  container_env = [
-    {
-      name  = "REACT_APP_BACKEND_URL"
-      value = "http://${data.aws_alb.backend_alb.dns_name}"
-    }
-  ]
+  # This should be true, but to avoid high NAT gateway costs
+  # I am turning this off during development / learning and
+  # putting everything in public subnets for now
+  ecs_service_in_private_subnets = false
 }

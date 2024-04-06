@@ -29,3 +29,7 @@ module "ecs_cluster" {
   # putting everything in public subnets for now
   ecs_service_in_private_subnets = false
 }
+
+module "config" {
+  source = "./modules/app_config"
+}

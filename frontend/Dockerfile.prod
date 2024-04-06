@@ -1,5 +1,7 @@
 FROM node:14-alpine as build
 
+ARG BACKEND_URL
+
 WORKDIR /app
 
 COPY package.json .
@@ -9,8 +11,6 @@ RUN npm install
 COPY . .
 
 RUN npm run build
-
-ENV REACT_APP_BACKEND_URL=localhost:8080
 
 FROM nginx:stable-alpine
 

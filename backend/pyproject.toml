@@ -3,9 +3,8 @@ name = "langchain-app"
 version = "0.1.0"
 description = ""
 authors = ["Felix Stephenson <felix.s@hotmail.co.uk>"]
-readme = "README.md"
 packages = [
-    { include = "app" },
+    { include = "src" },
 ]
 
 [tool.poetry.dependencies]

@@ -42,7 +42,6 @@ resource "aws_ecs_task_definition" "this" {
           containerPort = var.container_port
         },
       ]
-      environment = var.container_env
 
       logConfiguration = {
         logDriver = "awslogs"
@@ -75,7 +74,9 @@ resource "aws_ecs_service" "this" {
       aws_security_group.ecs_egress_all.id,
       aws_security_group.ingress_api.id
     ]
-    subnets = data.aws_subnets.private.ids
+
+    subnets = var.ecs_service_in_private_subnets ? data.aws_subnets.private.ids : data.aws_subnets.public.ids
+
   }
 
   load_balancer {

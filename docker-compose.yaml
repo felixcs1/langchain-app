@@ -5,16 +5,16 @@ services:
     image: ollama/ollama
     volumes:
       - ./models:/root/.ollama
-    # # Only to check ollam is running on local host
+    # Only to check ollama is running on local host
     ports:
       - 11434:11434
   langserve:
     container_name: langserve
     build:
-      context: ./
+      context: ./backend
       dockerfile: Dockerfile
     volumes:
-      - ./:/code
+      - ./:/src
     ports:
       - "8080:8080"
     depends_on:
@@ -34,11 +34,9 @@ services:
       - langserve
 
 
-
 # To get new model into local folder
 # docker run --rm -d -p 11434:11434 --name ollama --network ollama-net -v $(pwd)/models:/root/.ollama ollama/ollama
 # docker exec -it  ollama ollama run orca-mini:3b
-
 
 # Run with commands
 # docker network create ollama-net

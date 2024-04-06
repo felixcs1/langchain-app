@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import './simple_app.css'; // Import CSS file for styling
 
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8080';
-// const backendUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'http://goals-app-backend-alb-360739314.eu-west-2.elb.amazonaws.com';
+// const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8080';
+const backendUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : 'http://api.felixcs.xyz';
 console.log("Backend URL: " + backendUrl);
 console.log("ENV: " + JSON.stringify(process.env));
 

@@ -6,17 +6,17 @@ RUN poetry config virtualenvs.create false
 
 WORKDIR /code
 
-COPY ./pyproject.toml ./README.md ./poetry.lock* ./
+COPY ./pyproject.toml ./poetry.lock* ./
 
 COPY ./package[s] ./packages
 
 RUN poetry install  --no-interaction --no-ansi --no-root
 
-COPY ./app ./app
+COPY ./src ./src
 
 RUN poetry install --no-interaction --no-ansi
 
 EXPOSE 8080
 
-# CMD exec uvicorn app.server:app --host 0.0.0.0 --port 8080
-CMD [ "python", "app/server.py" ]
+# CMD exec uvicorn src.server:app --host 0.0.0.0 --port 8080
+CMD [ "python", "src/server.py" ]
