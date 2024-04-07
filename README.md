@@ -1,44 +1,35 @@
-# langchain_demo_app
+# Deploying a chat bot
+
+This project was used to learn how to deploy a web app on aws, using IaC (Terraform) and Docker
 
 Architecture: https://miro.com/app/board/uXjVKaHvfVM=/
+
+## Some useful dev commands
 
 Install pre-commit hook
 ```
 pre-commit install
 ```
 
-# Run locally
+### Run locally
 
 ```
 docker-compose up
 ```
 
-## Docker
 
-Set account id
-```
-export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
-```
+### Build and push images to ECR
 
 ```
-aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.eu-west-2.amazonaws.com/langserve
-
-docker build -t $AWS_ACCOUNT_ID.dkr.ecr.eu-west-2.amazonaws.com/langserve:latest .
-
-docker push $AWS_ACCOUNT_ID.dkr.ecr.eu-west-2.amazonaws.com/langserve:latest
-
+sh scripts/build-push.sh
 ```
 
-For front end
+### Deploy all services
 ```
-aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.eu-west-2.amazonaws.com/langserve
-
-docker build -t $AWS_ACCOUNT_ID.dkr.ecr.eu-west-2.amazonaws.com/langserve-frontend:latest -f ./frontend/Dockerfile.prod  ./frontend
-
-docker push $AWS_ACCOUNT_ID.dkr.ecr.eu-west-2.amazonaws.com/langserve-frontend:latest
+sh scripts/deploy-all.sh
 ```
 
-## ECS
+### Debugging
 
 Access terminal in a task container
 
@@ -51,3 +42,14 @@ Access terminal in a task container
 --command "/bin/bash" \
 --interactive
 ```
+
+
+## Infra
+
+Infra not managed by terraform
+- The Route 53 hosted zone
+
+Outstanding Questions
+- How do albs access private subnets
+- Do you need nginx and alb, whats the difference
+- Route 53 points to albs, which have https listeners, but the alb dns is still callable in browser over http, how?

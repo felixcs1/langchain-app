@@ -45,3 +45,13 @@ data "aws_iam_role" "ecs_execution_role" {
 data "aws_iam_role" "ecs_task_role" {
   name = "ECSTaskRole"
 }
+
+# N.B this was created manually not in the common infra
+data "aws_route53_zone" "selected" {
+  name = "felixcs.xyz"
+}
+
+data "aws_acm_certificate" "https" {
+  domain   = "felixcs.xyz"
+  statuses = ["ISSUED"]
+}

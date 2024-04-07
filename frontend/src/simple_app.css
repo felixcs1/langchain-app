@@ -1,51 +1,96 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('img/background.jpg'); /* Add background image */
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .container {
-    margin: 20px auto;
-    padding: 20px;
-    max-width: 500px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-  }
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 500px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.5); /* Adjust the opacity as needed */
+  background-size: cover; /* Ensure the image covers the entire container */
+  background-position: center; /* Center the background image */
+}
 
-  h1 {
-    text-align: center;
-    color: #333;
-  }
 
-  form {
-    margin-top: 20px;
-    text-align: center;
-  }
+h1 {
+  text-align: center;
+  color: #333;
+}
 
-  .input-field {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
+form {
+  margin-top: 20px;
+  display: flex;
+}
 
-  .submit-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+.input-field {
+  flex: 1;
+  padding: 10px;
+  margin-right: 0;
+  border: 1px solid #ccc;
+  border-radius: 5px 0 0 5px;
+  height: 40px;
+}
 
-  .submit-button:hover {
-    background-color: #0056b3;
-  }
+.submit-button {
+  background-color: rgba(255, 255, 255, 0.5);
+  color: rgb(103, 100, 100);
+  padding: 10px;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  height: 40px;
+  line-height: 20px; /* Adjust line height to center the arrow */
+}
 
-  .response-container {
-    margin-top: 20px;
-    text-align: center;
-  }
+.submit-button:hover {
+  background-color: #ffffff;
+}
 
-  .response-text {
-    font-size: 18px;
-    color: #333;
-  }
 
+.response-container {
+  margin-top: 20px;
+}
+
+.response-text {
+  font-size: 18px;
+  color: #333;
+}
+
+.user-message {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  width: fit-content;
+  text-align: right;
+  margin-left: auto;
+}
+
+.bot-message {
+  background-color: #ccc;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  width: fit-content;
+  text-align: left;
+  margin-right: auto;
+}
+
+
+.footer {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin-top: 20px;
+}

@@ -24,12 +24,15 @@ module "ecs_cluster" {
   task_cpu         = local.task_cpu
   task_memory      = local.task_memory
 
+  container_env = [
+    {
+      name  = "OLLAMA_URL"
+      value = "localhost" # Can use this within one ecs task
+    },
+  ]
+
   # This should be true, but to avoid high NAT gateway costs
   # I am turning this off during development / learning and
   # putting everything in public subnets for now
   ecs_service_in_private_subnets = false
-}
-
-module "config" {
-  source = "./modules/app_config"
 }

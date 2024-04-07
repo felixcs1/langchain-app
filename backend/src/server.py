@@ -10,8 +10,6 @@ from src.chain import chain_simple
 from src.config import OLLAMA_PORT, OLLAMA_URL
 from starlette.background import BackgroundTasks
 
-# TODO this logger's log not showing in ECS task logs,
-# only print statements working
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
@@ -29,7 +27,7 @@ app.add_middleware(
 
 
 # Try not using access point for EFS mount
-def download_model():
+def pull_model():
     logger.info("downloading model")
     response = requests.post(
         f"http://{OLLAMA_URL}:{OLLAMA_PORT}/api/pull",
@@ -45,7 +43,7 @@ def download_model():
 @app.on_event("startup")
 async def startup_event():
     background_tasks = BackgroundTasks()
-    background_tasks.add_task(download_model)
+    background_tasks.add_task(pull_model)
     await background_tasks()
     logger.info("background tasks done")
 
@@ -58,7 +56,7 @@ add_routes(app, chain_simple, path="/simple")
 async def redirect_root_to_docs():
     logger.info("Direct to docs")
     response = requests.get("http://www.google.com")
-    logger.info("Pinged google, with status:", response.status_code)
+    logger.info(f"Pinged google, with status: {response.status_code}")
     return RedirectResponse("/docs")
 
 
@@ -66,9 +64,6 @@ async def redirect_root_to_docs():
 async def healthz():
     return "Healthy"
 
-
-# Edit this to add the chain you want to add
-# add_routes(app, NotImplemented)
 
 if __name__ == "__main__":
     import uvicorn

@@ -79,12 +79,8 @@ resource "aws_ecs_task_definition" "this" {
           containerPort = var.container_port
         },
       ]
-      environment = [
-        {
-          name  = "OLLAMA_URL"
-          value = "localhost" # Can use this within one ecs task
-        }
-      ]
+      environment = var.container_env
+
       logConfiguration = {
         logDriver = "awslogs"
 
@@ -97,9 +93,6 @@ resource "aws_ecs_task_definition" "this" {
     },
   ])
 
-
-  # N.B to see this EFS volume work you need to shut down all tasks (desired task to 0)
-  # This is because you cant have 2 mongodb tasks writing to the exact same folder in EFS
   volume {
     name = "efs-persist"
 

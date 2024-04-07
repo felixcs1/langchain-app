@@ -1,4 +1,4 @@
-Below is the boiler plate langeserve readme, doesnt fully apply to this project but leaving here for now.
+Below is the boiler plate langeserve readme, doesnt fully apply to this project but leaving here for now. This project is mainly for learning infra stuff so
 
 ## Installation
 
