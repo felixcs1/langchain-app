@@ -1,13 +1,23 @@
 # Deploying a chat bot
 
-This project was used to learn how to deploy a web app on aws, using IaC (Terraform) and Docker
+This project was used to learn how to deploy a language model, using mainly the following:
+ - IaC (Terraform)
+ - Docker
+ - Langchain/Langserve
+ - Ollama
+ - AWS Elastic Container Service
 
-Architecture: https://miro.com/app/board/uXjVKaHvfVM=/
+## Architecture
+
+![https://miro.com/app/board/uXjVKaHvfVM=/](./.github/img/architecture.jpg)
 
 ## Some useful dev commands
 
-Install pre-commit hook
+Install pre-commit hooks
 ```
+python -m venv venv
+source venv/bin/activate
+pip install pre-commit
 pre-commit install
 ```
 
@@ -16,7 +26,6 @@ pre-commit install
 ```
 docker-compose up
 ```
-
 
 ### Build and push images to ECR
 
@@ -47,6 +56,7 @@ Access terminal in a task container
 ## Infra
 
 Infra not managed by terraform
+- The S3 bucket which holds the terraform state files
 - The Route 53 hosted zone
 
 Outstanding Questions
