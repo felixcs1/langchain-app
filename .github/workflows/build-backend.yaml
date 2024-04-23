@@ -1,5 +1,5 @@
-name: Build Backend
-run-name: Build Backend - ${{ github.event.inputs.destination }}
+name: Build and Push
+run-name: Build and Push - ${{ github.event.inputs.destination }}
 
 on:
   workflow_dispatch:
@@ -13,11 +13,22 @@ on:
         default: ECR
 
 jobs:
-  build-and-push:
+  build-and-push-backend:
     uses: ./.github/workflows/wc-build-push.yaml
     with:
       repo: langserve
       image_tag: latest
       dockerfile: Dockerfile
+      context: ./backend
+      destination: ${{ inputs.destination }}
+    secrets: inherit
+
+  build-and-push-frontend:
+    uses: ./.github/workflows/wc-build-push.yaml
+    with:
+      repo: langserve-frontend
+      image_tag: latest
+      dockerfile: Dockerfile.prod
+      context: ./frontend
       destination: ${{ inputs.destination }}
     secrets: inherit

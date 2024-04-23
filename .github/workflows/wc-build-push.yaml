@@ -1,6 +1,6 @@
 name: wc - build and push
 
-on: 
+on:
   workflow_call:
     inputs:
       repo:
@@ -13,22 +13,25 @@ on:
       dockerfile:
         description: 'Dockerfile name'
         type: string
+      context:
+        description: 'Docker build context'
+        type: string
       destination:
         type: string
         description: "Where to push the image to 'ECR' or 'HUB'"
         default: ECR
-  
+
 jobs:
-  build-and-push-ecr:   
+  build-and-push-ecr:
     name: Build and Push
-    runs-on: ubuntu-20.04  
-    steps:  
+    runs-on: ubuntu-20.04
+    steps:
       - name: Checkout
-        uses: actions/checkout@v2 
+        uses: actions/checkout@v2
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-        
+
       - name: Setup AWS ECR Details
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -59,8 +62,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ${{inputs.context}}
           push: true
           file: ${{inputs.dockerfile}}
           tags: ${{ env.ECR_URL }}/${{inputs.repo}}:${{inputs.image_tag}}
-        
