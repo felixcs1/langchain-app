@@ -9,24 +9,24 @@ on:
         description: "Which infra folder to deploy"
         options:
           - common
-          - app
+          - backend
           - frontend
         default: common
 
 
 jobs:
   deploy:
-    name: Deploy
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
+    name: Deploy - ${{ inputs.dir }}
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./infra/${{ inputs.dir }}
     permissions:
       pull-requests: write
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
     steps:
     - uses: actions/checkout@v4
     - uses: hashicorp/setup-terraform@v3
@@ -38,7 +38,7 @@ jobs:
 
     - name: Terraform Init
       id: init
-      run: terraform init -backend-config=backend/personal.backend.tfvars
+      run: terraform init -backend-config=backend/backend.tfvars
 
     - name: Terraform Validate
       id: validate
@@ -47,4 +47,7 @@ jobs:
     - name: Terraform Plan
       id: plan
       run: terraform plan -no-color
-      continue-on-error: true
+
+    - name: Terraform Apply
+      id: apply
+      run: terraform apply -auto-approve -no-color
