@@ -43,7 +43,7 @@ sh scripts/deploy-all.sh
 Access terminal in a task container
 
 ```
- aws ecs execute-command \
+aws ecs execute-command \
 --region eu-west-2 \
 --cluster langserve-app-cluster \
 --task <TASK ID> \
@@ -51,7 +51,6 @@ Access terminal in a task container
 --command "/bin/bash" \
 --interactive
 ```
-
 
 ## Infra
 
@@ -63,3 +62,14 @@ Outstanding Questions
 - How do albs access private subnets
 - Do you need nginx and alb, whats the difference
 - Route 53 points to albs, which have https listeners, but the alb dns is still callable in browser over http, how?
+- Do you tend to deploy to default VPC (cheaper?)
+
+
+## Todo
+
+- Use an API gateway to front the app
+- Manage ollama model loading with a lambda
+- Switch front end to use serverless
+
+## Done
+- Switch Ollama container from fargate to provisioned ec2 with GPU enabled
