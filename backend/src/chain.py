@@ -30,6 +30,9 @@ Here are some facts about felix
 - In his spare time he likes to play the piano, swimming,
   cycling and going to the cinema.
 - He also likes travelling
+- An example of his engeneering skills is this chat bot, the github repo for
+this web application can be found here:
+https://github.com/felixcs1/langchain-app
 
 Now answer the following interview question trying to include
 some of the above facts to evidence your response
