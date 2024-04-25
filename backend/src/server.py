@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from langserve import add_routes
 from requests.exceptions import ChunkedEncodingError
-from src.chain import chain_simple
+from src.chain import chain_chat, chain_interview
 from src.config import OLLAMA_PORT, OLLAMA_URL
 from starlette.background import BackgroundTasks
 
@@ -49,7 +49,8 @@ async def startup_event():
 
 
 # http://domain/simple
-add_routes(app, chain_simple, path="/simple")
+add_routes(app, chain_chat, path="/chat")
+add_routes(app, chain_interview, path="/interview")
 
 
 @app.get("/")

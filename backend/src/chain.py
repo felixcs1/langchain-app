@@ -14,7 +14,7 @@ model_local = ChatOllama(
     model=ollama_llm, base_url=f"http://{OLLAMA_URL}:{OLLAMA_PORT}"
 )
 
-template = """You are a helpful assistant called FelixGPT.
+interview_template = """You are a helpful assistant called FelixGPT.
 Felix is looking for a Data Science or Machine Learning Engineer.
 job. You will answer job interview questions for him.
 
@@ -34,14 +34,29 @@ Here are some facts about felix
 this web application can be found here:
 https://github.com/felixcs1/langchain-app
 
-Now answer the following interview question trying to include
-some of the above facts to evidence your response
+In your answers give an explanation using one or more of
+the above facts.
+Do not give facts that are not relevant to the question.
+
+Now answer the following interview question.
 Question: {question}
 """
-prompt = ChatPromptTemplate.from_template(template)
+
+
+chat_template = """You are a helpful assistant called FelixGPT.
+Answer the following question:
+Question: {question}
+"""
 
 # Chain
-chain_simple = prompt | model_local | StrOutputParser()
+chain_chat = (
+    ChatPromptTemplate.from_template(chat_template) | model_local | StrOutputParser()
+)
+chain_interview = (
+    ChatPromptTemplate.from_template(interview_template)
+    | model_local
+    | StrOutputParser()
+)
 
 logger.info("CHAIN INIT DONE!!!")
 logger.info(f"http://{OLLAMA_URL}:{OLLAMA_PORT}")

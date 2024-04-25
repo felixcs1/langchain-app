@@ -8,31 +8,32 @@ console.log("ENV: " + JSON.stringify(process.env));
 function Footer() {
   return (
     <footer className="footer">
-      <p>Copyright &copy; 2024 Felix Stephenson (definitely not a front end dev). All rights reserved.</p>
+      <p>Copyright &copy; 2024 Felix Stephenson (definitely not a front end dev)</p>
       <p><a href="https://github.com/felixcs1/langchain-app">Code Here</a></p>
     </footer>
   );
 }
 
-
 function App() {
   const [inputValue, setInputValue] = useState('');
   const [conversation, setConversation] = useState([]);
+  const [selectedType, setSelectedType] = useState('chat'); // Default to 'chat'
 
-  // Extemely hacky parsing of the stream response from the model
-  // if only I was better at JS
+  const handleTypeChange = (type) => {
+    console.log("Handle type change: " + type);
+    setSelectedType(type);
+  };
+  console.log("Selected type: " + selectedType);
+
   const handleSubmitStream = async (event) => {
     event.preventDefault();
 
     try {
-      // console.log(JSON.stringify(conversation) + inputValue)
-      const response = await fetch(`${backendUrl}/simple/stream`, {
+      const response = await fetch(`${backendUrl}/${selectedType}/stream`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        // Send last 200 chars and lastest user input
-        // body: JSON.stringify({ input: { question: JSON.stringify(conversation).slice(-200) + inputValue }, config: {}} )
         body: JSON.stringify({ input: { question: inputValue }, config: {}} )
       });
 
@@ -54,9 +55,9 @@ function App() {
         const extractedValues = [];
         let match;
         while ((match = regex.exec(decoded)) !== null) {
-          // Dont include UUIDs
-          if (containsUUID( match[1])){
-            console.log(containsUUID( match[1])); // Output: true
+          // Don't include UUIDs
+          if (containsUUID(match[1])){
+            console.log(containsUUID(match[1])); // Output: true
           } else {
             extractedValues.push(match[1]);
           }
@@ -74,7 +75,7 @@ function App() {
           receivedText += new_text
         }
 
-        // Dont print out \n chars, add quotes instead of \'s
+        // Don't print out \n chars, add quotes instead of \'s
         receivedText = receivedText.replace(/\\n/g, '\n').replace(/\\/g, '"');
 
         setConversation([...conversation, { user: inputValue, bot: receivedText }]);
@@ -93,7 +94,31 @@ function App() {
   return (
     <div className="app-container">
       <div className="container">
-        <h1>FelixGPT</h1>
+        <h1>Felix.ai</h1>
+        <div className="type-toggle">
+          <label>
+            <input
+              type="radio"
+              name="chat-type"
+              value="chat"
+              id="chat"
+            //   checked={selectedType === 'chat'}
+              onChange={() => handleTypeChange('chat')}
+            />
+            Chat
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="chat-type"
+              value="interview"
+              id='interview'
+            //   checked={selectedType === 'interview'}
+              onChange={() => handleTypeChange('interview')}
+            />
+            Interview
+          </label>
+        </div>
         <div className="conversation-container">
           {conversation.map((msg, index) => (
             <div key={index}>
@@ -107,7 +132,7 @@ function App() {
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Ask something..."
+            placeholder={selectedType === 'interview' ? 'Interview Felix...' : 'Ask something...'}
             className="input-field"
             onKeyDown={handleKeyDown}
           />
@@ -120,25 +145,3 @@ function App() {
 }
 
 export default App;
-
-
-// OLD, Get whole response before updating response on the page
-// const handleSubmit = async (event) => {
-//   event.preventDefault();
-
-//   try {
-//     const response = await fetch(`${backendUrl}/simple/invoke`, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json'
-//       },
-//       body: JSON.stringify({ input: { question: inputValue }, config: {}} )
-
-//     });
-
-//     const responseData = await response.json();
-//     setResponse(responseData.output); // Assuming response contains a message field
-//   } catch (error) {
-//     console.error('Error:', error);
-//   }
-// };

@@ -94,3 +94,36 @@ form {
   color: #666;
   margin-top: 20px;
 }
+
+
+.type-toggle {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.type-toggle label {
+  position: relative;
+}
+
+.type-toggle input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+
+.type-toggle label {
+  background-color: #f0f0f0;
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.type-toggle label:hover {
+  background-color: #e0e0e0;
+}
+
+.type-toggle input[type="radio"]:checked + label {
+  background-color: #007bff;
+  color: #fff;
+}
