@@ -16,10 +16,6 @@ on:
       context:
         description: 'Docker build context'
         type: string
-      destination:
-        type: string
-        description: "Where to push the image to 'ECR' or 'HUB'"
-        default: ECR
 
 jobs:
   build-and-push-ecr:
@@ -49,20 +45,10 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Set ECR destination
-        run: |
-          if [ "${{inputs.destination}}" = "ECR" ]; then
-            echo "ECR_URL=${{ steps.ecr.outputs.registry }}" >> $GITHUB_ENV
-          elif [ "${{inputs.destination}}" = "HUB" ]; then
-            echo "ECR_URL=felixsteph" >> $GITHUB_ENV
-          else
-            echo "Invalid input value provided"
-            exit 1
-          fi
-      - name: Build and push
+      - name: Build and Push
         uses: docker/build-push-action@v5
         with:
           context: ${{inputs.context}}
           push: true
-          file: ${{inputs.dockerfile}}
-          tags: ${{ env.ECR_URL }}/${{inputs.repo}}:${{inputs.image_tag}}
+          file: ${{inputs.context}}/${{inputs.dockerfile}}
+          tags: ${{ steps.ecr.outputs.registry }}/${{inputs.repo}}:${{inputs.image_tag}}

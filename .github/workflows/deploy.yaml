@@ -1,53 +1,40 @@
 name: Deploy
-run-name: Deploy - ${{ github.event.inputs.dir }}
+run-name: Deploy - ${{ github.event.inputs.stack }}
 
 on:
   workflow_dispatch:
     inputs:
-      dir:
+      stack:
         type: choice
-        description: "Which infra folder to deploy"
+        description: "Which infra to build and push"
         options:
-          - common
           - backend
           - frontend
+          - common
+          - backend-frontend
         default: common
 
-
 jobs:
-  deploy:
-    name: Deploy - ${{ inputs.dir }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./infra/${{ inputs.dir }}
-    permissions:
-      pull-requests: write
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-    steps:
-    - uses: actions/checkout@v4
-    - uses: hashicorp/setup-terraform@v3
+  deploy-common:
+    if : ${{ github.event.inputs.stack == 'common' }}
+    name: Common
+    uses: ./.github/workflows/wc-deploy.yaml
+    with:
+      dir: common
+    secrets: inherit
 
-    - name: Terraform fmt
-      id: fmt
-      run: terraform fmt -check
-      continue-on-error: true
+  deploy-backend:
+    if: ${{ github.event.inputs.stack == 'backend' || github.event.inputs.stack == 'backend-frontend' }}
+    name: Backend
+    uses: ./.github/workflows/wc-deploy.yaml
+    with:
+      dir: backend
+    secrets: inherit
 
-    - name: Terraform Init
-      id: init
-      run: terraform init -backend-config=backend/backend.tfvars
-
-    - name: Terraform Validate
-      id: validate
-      run: terraform validate -no-color
-
-    - name: Terraform Plan
-      id: plan
-      run: terraform plan -no-color
-
-    - name: Terraform Apply
-      id: apply
-      run: terraform apply -auto-approve -no-color
+  deploy-frontend:
+    if: ${{ github.event.inputs.stack == 'frontend' || github.event.inputs.stack == 'backend-frontend' }}
+    name: Frontend
+    uses: ./.github/workflows/wc-deploy.yaml
+    with:
+      dir: frontend
+    secrets: inherit

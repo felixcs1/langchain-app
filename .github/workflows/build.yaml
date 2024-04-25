@@ -1,34 +1,37 @@
 name: Build and Push
-run-name: Build and Push - ${{ github.event.inputs.destination }}
+run-name: Build and Push - ${{ github.event.inputs.service }}
 
 on:
   workflow_dispatch:
     inputs:
-      destination:
+      service:
         type: choice
-        description: "Where to push the image to 'ECR' or 'HUB'"
+        description: "Which service to build and push"
         options:
-          - ECR
-          - HUB
-        default: ECR
+          - backend
+          - frontend
+          - both
+        default: both
 
 jobs:
   build-and-push-backend:
+    if: ${{ github.event.inputs.service == 'both' || github.event.inputs.service == 'backend' }}
+    name: Backend
     uses: ./.github/workflows/wc-build-push.yaml
     with:
       repo: langserve
       image_tag: latest
       dockerfile: Dockerfile
       context: ./backend
-      destination: ${{ inputs.destination }}
     secrets: inherit
 
   build-and-push-frontend:
+    if: ${{ github.event.inputs.service == 'both' || github.event.inputs.service == 'frontend' }}
+    name: Frontend
     uses: ./.github/workflows/wc-build-push.yaml
     with:
       repo: langserve-frontend
       image_tag: latest
       dockerfile: Dockerfile.prod
       context: ./frontend
-      destination: ${{ inputs.destination }}
     secrets: inherit
