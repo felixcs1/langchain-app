@@ -213,3 +213,4 @@ venv
 .lock.hcl
 
 .python-version
+.pem

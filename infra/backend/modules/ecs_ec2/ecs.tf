@@ -91,6 +91,8 @@ resource "aws_ecs_task_definition" "new" {
         },
       ]
 
+      # N.B can check this on the container with 'df -h'
+
       logConfiguration = {
         logDriver = "awslogs"
 
@@ -100,6 +102,12 @@ resource "aws_ecs_task_definition" "new" {
           awslogs-stream-prefix = "${local.service_name}-ec2"
         }
       }
+      mountPoints : [
+        {
+          sourceVolume : "efs-persist",
+          containerPath : "/root/.ollama"
+        }
+      ]
     },
     {
       name  = "${var.app_name}-container"
@@ -126,6 +134,15 @@ resource "aws_ecs_task_definition" "new" {
       }
     },
   ])
+
+  volume {
+    name = "efs-persist"
+
+    efs_volume_configuration {
+      file_system_id = aws_efs_file_system.efs_volume.id
+      root_directory = "/"
+    }
+  }
 }
 
 resource "aws_ecs_service" "new" {

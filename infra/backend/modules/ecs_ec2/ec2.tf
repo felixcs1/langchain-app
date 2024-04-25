@@ -69,54 +69,6 @@ resource "aws_autoscaling_group" "ecs_asg" {
 }
 
 
-resource "aws_security_group" "ec2_security_group" {
-  name        = "${var.app_name}-ec2-sg"
-  description = "HTTP traffic"
-  vpc_id      = data.aws_vpc.this.id
-
-  # Enable ssh external server connection:
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = var.container_port
-    to_port     = var.container_port
-    protocol    = "TCP"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "TCP"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-# --- ECS Node SG ---
-resource "aws_security_group" "ecs_node_sg" {
-  name_prefix = "demo-ecs-node-sg-"
-  vpc_id      = data.aws_vpc.this.id
-
-  egress {
-    from_port   = 0
-    to_port     = 65535
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
 # For some reason when using an ecs optimized ec2 ami I cnat
 # connect with instance connect so I make a key pair here
 resource "tls_private_key" "gen_tls_pk" {
