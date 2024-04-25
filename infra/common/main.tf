@@ -2,26 +2,6 @@ resource "aws_ecs_cluster" "this" {
   name = "langserve-cluster"
 }
 
-resource "aws_ecr_repository" "backend" {
-  name = "langserve"
-
-  image_tag_mutability = "MUTABLE"
-
-  image_scanning_configuration {
-    scan_on_push = true
-  }
-}
-
-resource "aws_ecr_repository" "frontend" {
-  name = "langserve-frontend"
-
-  image_tag_mutability = "MUTABLE"
-
-  image_scanning_configuration {
-    scan_on_push = true
-  }
-}
-
 
 module "vpc" {
   source   = "./modules/vpc"

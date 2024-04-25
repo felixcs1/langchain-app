@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
 }
 
 
-# Execution role
+# Execution role, grants the ECS Agent the necessary rights to write log streams, for example.
 resource "aws_iam_role" "ecs_execution_role" {
   name               = "ECSExecutionRole"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
@@ -27,7 +27,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-# Permissions ECS needs(?) for EFS
+# Permissions ECS needs(?) for mounting EFS
 resource "aws_iam_role_policy_attachment" "ecs_efs_access_policy" {
   role       = aws_iam_role.ecs_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonElasticFileSystemFullAccess"
@@ -35,7 +35,8 @@ resource "aws_iam_role_policy_attachment" "ecs_efs_access_policy" {
 
 
 
-# Task role
+# Task role, assumed by the executed ECS Task itself.
+# It may be necessary if the task needs access to additional AWS services
 resource "aws_iam_role" "ecs_task_role" {
   name               = "ECSTaskRole"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json

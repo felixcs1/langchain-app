@@ -1,4 +1,4 @@
-# For ALB
+# For ALB TODO: combine egress_all https and http into a single alb_security_group
 resource "aws_security_group" "http" {
   name        = "${var.app_name}-http"
   description = "HTTP traffic"
@@ -41,6 +41,7 @@ resource "aws_security_group" "ecs_egress_all" {
 }
 
 # For the web app running on ECS service
+# TODO can we add the alb sec group to this so ONLY traffice from alb is accepted?
 resource "aws_security_group" "ingress_api" {
   name        = "${var.app_name}-ingress-api"
   description = "Allow ingress to API"

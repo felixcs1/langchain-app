@@ -1,10 +1,7 @@
 resource "aws_efs_file_system" "efs_volume" {
-
-
   tags = {
     Name = "ECS-EFS-FS"
   }
-
 }
 
 
