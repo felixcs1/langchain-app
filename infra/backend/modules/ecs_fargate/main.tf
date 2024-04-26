@@ -41,7 +41,7 @@ resource "aws_ecs_task_definition" "this" {
       name      = "ollama-container"
       image     = "ollama/ollama"
       cpu       = 2048
-      memory    = 8192
+      memory    = 4096
       essential = false # Required for it to be a dependency of the app container
       portMappings = [
         {

@@ -20,30 +20,30 @@ resource "aws_ecr_repository" "frontend" {
 
 
 # Expire old images to save cost of storage
-# data "aws_ecr_lifecycle_policy_document" "example" {
-#   rule {
-#     priority    = 1
-#     description =  "Expire images older than 14 days"
+data "aws_ecr_lifecycle_policy_document" "expire" {
+  rule {
+    priority    = 1
+    description = "Expire images older than 7 days"
 
-#     selection {
-#       tag_status      = "untagged"
-#       count_type      = "sinceImagePushed"
-#       count_unit      = "days"
-#       count_number    = 14
-#     }
+    selection {
+      tag_status   = "untagged"
+      count_type   = "sinceImagePushed"
+      count_unit   = "days"
+      count_number = 7
+    }
 
-#     action {
-#       type = "expire"
-#     }
-#   }
-# }
+    action {
+      type = "expire"
+    }
+  }
+}
 
-# resource "aws_ecr_lifecycle_policy" "be" {
-#   repository = aws_ecr_repository.backend.name
-#   policy = data.aws_ecr_lifecycle_policy_document.example.json
-# }
+resource "aws_ecr_lifecycle_policy" "be" {
+  repository = aws_ecr_repository.backend.name
+  policy     = data.aws_ecr_lifecycle_policy_document.expire.json
+}
 
-# resource "aws_ecr_lifecycle_policy" "fe" {
-#   repository = aws_ecr_repository.frontend.name
-#   policy = data.aws_ecr_lifecycle_policy_document.example.json
-# }
+resource "aws_ecr_lifecycle_policy" "fe" {
+  repository = aws_ecr_repository.frontend.name
+  policy     = data.aws_ecr_lifecycle_policy_document.expire.json
+}
