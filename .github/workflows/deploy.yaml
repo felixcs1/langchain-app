@@ -21,20 +21,23 @@ jobs:
     uses: ./.github/workflows/wc-deploy.yaml
     with:
       dir: common
+      command: apply
     secrets: inherit
 
   deploy-backend:
-    if: ${{ github.event.inputs.stack == 'backend' || github.event.inputs.stack == 'backend-frontend' }}
+    if: ${{ inputs.stack == 'backend' || inputs.stack == 'backend-frontend' }}
     name: Backend
     uses: ./.github/workflows/wc-deploy.yaml
     with:
       dir: backend
+      command: apply
     secrets: inherit
 
   deploy-frontend:
-    if: ${{ github.event.inputs.stack == 'frontend' || github.event.inputs.stack == 'backend-frontend' }}
+    if: ${{ inputs.stack == 'frontend' || inputs.stack == 'backend-frontend' }}
     name: Frontend
     uses: ./.github/workflows/wc-deploy.yaml
     with:
       dir: frontend
+      command: apply
     secrets: inherit

@@ -1,0 +1,43 @@
+name: Destroy
+run-name: Destroy - ${{ github.event.inputs.stack }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      stack:
+        type: choice
+        description: "Which infra to build and push"
+        options:
+          - backend
+          - frontend
+          - all
+        default: common
+
+jobs:
+  destroy-backend:
+    if: ${{ inputs.stack == 'backend' || inputs.stack == 'all' }}
+    name: Backend
+    uses: ./.github/workflows/wc-deploy.yaml
+    with:
+      dir: backend
+      command: destroy
+    secrets: inherit
+
+  destroy-frontend:
+    if: ${{ inputs.stack == 'frontend' || inputs.stack == 'all' }}
+    name: Frontend
+    uses: ./.github/workflows/wc-deploy.yaml
+    with:
+      dir: frontend
+      command: destroy
+    secrets: inherit
+
+  destroy-common:
+    needs: [destroy-backend, destroy-frontend]
+    if : ${{ inputs.stack == 'all' }}
+    name: Common
+    uses: ./.github/workflows/wc-deploy.yaml
+    with:
+      dir: common
+      command: destroy
+    secrets: inherit

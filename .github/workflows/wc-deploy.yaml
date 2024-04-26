@@ -6,6 +6,10 @@ on:
       dir:
         type: string
         description: "Which infra folder to deploy"
+      command:
+        type: string
+        description: "Which command to run, apply/destroy"
+        required: true
 
 jobs:
   deploy:
@@ -39,6 +43,6 @@ jobs:
       id: plan
       run: terraform plan -no-color
 
-    - name: Terraform Apply
+    - name: Terraform ${{ inputs.command }}
       id: apply
-      run: terraform apply -auto-approve -no-color
+      run: terraform ${{ inputs.command }} -auto-approve -no-color
