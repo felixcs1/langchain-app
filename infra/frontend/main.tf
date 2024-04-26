@@ -11,10 +11,6 @@ locals {
 }
 
 
-data "aws_alb" "backend_alb" {
-  name = "langserve-app-alb"
-}
-
 module "frontend" {
   source = "./modules/ecs"
 

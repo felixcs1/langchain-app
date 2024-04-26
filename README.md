@@ -70,6 +70,7 @@ Outstanding Questions
 - Use an API gateway to front the app
 - Manage ollama model loading with a lambda
 - Switch front end to use serverless
+- What does df -h actaully show, what is the nvidia smi thing which is 30GB?
 
 ## Done
 - Switch Ollama container from fargate to provisioned ec2 with GPU enabled
