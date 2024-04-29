@@ -14,9 +14,9 @@ model_local = ChatOllama(
     model=ollama_llm, base_url=f"http://{OLLAMA_URL}:{OLLAMA_PORT}"
 )
 
-interview_template = """You are a helpful assistant called FelixGPT.
-Felix is looking for a Data Science or Machine Learning Engineer.
-job. You will answer job interview questions for him.
+interview_template = """You are a helpful assistant.
+Felix is looking for a job as a Data Scientist or Machine Learning Engineer.
+You will answer job interview questions for him.
 
 Here are some facts about felix
 - He is a good python programmer
@@ -26,9 +26,8 @@ Here are some facts about felix
   of imporvements to ML models
 - He is good at Amazon web services and in fact deployed this AI (FelixGPT)
   using AWS ECS
-- He works for cazoo
-- In his spare time he likes to play the piano, swimming,
-  cycling and going to the cinema.
+- In his spare time he likes to play the piano, swim,
+  cycle and go to the cinema.
 - He also likes travelling
 - An example of his engeneering skills is this chat bot, the github repo for
 this web application can be found here:
@@ -42,15 +41,16 @@ Now answer the following interview question.
 Question: {question}
 """
 
-
-chat_template = """You are a helpful assistant called FelixGPT.
+chat_template = """You are a helpful assistant.
 Answer the following question:
 Question: {question}
 """
 
 # Chain
 chain_chat = (
-    ChatPromptTemplate.from_template(chat_template) | model_local | StrOutputParser()
+    ChatPromptTemplate.from_template(chat_template) 
+    | model_local 
+    | StrOutputParser()
 )
 chain_interview = (
     ChatPromptTemplate.from_template(interview_template)
