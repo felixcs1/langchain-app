@@ -11,6 +11,7 @@ locals {
 }
 
 
+# ECS Fargate (no GPU support)
 module "ecs_service" {
   source = "./modules/ecs_fargate"
 

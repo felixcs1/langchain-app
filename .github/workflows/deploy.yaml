@@ -6,7 +6,7 @@ on:
     inputs:
       stack:
         type: choice
-        description: "Which infra to build and push"
+        description: "Which infra to deploy"
         options:
           - backend
           - frontend

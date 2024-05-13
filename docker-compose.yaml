@@ -34,6 +34,8 @@ services:
       - langserve
 
 
+# Plain docker commands
+
 # To get new model into local folder
 # docker run --rm -d -p 11434:11434 --name ollama --network ollama-net -v $(pwd)/models:/root/.ollama ollama/ollama
 # docker exec -it  ollama ollama run orca-mini:3b
